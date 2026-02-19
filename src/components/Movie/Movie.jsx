@@ -45,6 +45,12 @@ const createInitialRevealState = () => ({
   [RevealKeys.HINTS]: false,
 });
 
+/**
+ * Manage reveal flag updates for movie details and hints.
+ * @param {Record<string, boolean>} state Current reveal state.
+ * @param {{type: string, payload?: Record<string, boolean>}} action Reducer action.
+ * @returns {Record<string, boolean>} Updated reveal state.
+ */
 const revealReducer = (state, action) => {
   switch (action.type) {
     case RevealActionTypes.SET:
@@ -69,7 +75,7 @@ const Movie = ({
   const [revealState, dispatchReveal] = useReducer(
     revealReducer,
     undefined,
-    createInitialRevealState
+    createInitialRevealState,
   );
 
   const {
@@ -80,6 +86,10 @@ const Movie = ({
     [RevealKeys.HINTS]: revealHints,
   } = revealState;
 
+  /**
+   * Build the localStorage key for this movie's hint reveal state.
+   * Returns null when puzzleId is missing to disable persistence.
+   */
   const hintsStorageKey = useMemo(() => {
     if (!puzzleId) {
       return null;
@@ -87,21 +97,30 @@ const Movie = ({
     return `${puzzleId}-${movie.id}-hints`;
   }, [movie.id, puzzleId]);
 
+  /**
+   * True when this movie appears in guesses as a correct answer.
+   */
   const movieGuessed = useMemo(() => {
     if (!Array.isArray(guesses)) {
       return false;
     }
 
     return guesses.some(
-      (guess) => guess.id === movie.id && guess.correct === true
+      (guess) => guess.id === movie.id && guess.correct === true,
     );
   }, [guesses, movie.id]);
 
+  /**
+   * True when full movie details should be shown (guessed, won, or lost).
+   */
   const revealAll = useMemo(
     () => movieGuessed || youWon || youLost,
-    [movieGuessed, youWon, youLost]
+    [movieGuessed, youWon, youLost],
   );
 
+  /**
+   * Normalize cast rows and derive a sanitized character label for display.
+   */
   const processedCast = useMemo(() => {
     if (!Array.isArray(movie?.cast)) {
       return [];
@@ -120,6 +139,7 @@ const Movie = ({
       };
     });
   }, [movie?.cast]);
+
   const revealCharNamesVisible = revealAll || revealCharNames;
 
   const hydratedHintsRef = useRef(null);
@@ -160,13 +180,13 @@ const Movie = ({
         payload: { [stateKey]: true },
       });
     },
-    [movie.id, onHintSpend]
+    [movie.id, onHintSpend],
   );
 
   // ------------------------------------------------------------------------useEffects
 
   /**
-   * Toggle this movie as guessed when it is guessed
+   * Reveal title/director/synopsis/character names whenever full reveal is active.
    */
   useEffect(() => {
     if (revealAll) {
@@ -182,6 +202,9 @@ const Movie = ({
     }
   }, [revealAll]);
 
+  /**
+   * Hydrate reveal flags from localStorage whenever the storage key changes.
+   */
   useEffect(() => {
     if (!hintsStorageKey) {
       hydratedHintsRef.current = null;
@@ -215,6 +238,9 @@ const Movie = ({
     setHintsHydrated(true);
   }, [hintsStorageKey]);
 
+  /**
+   * Persist reveal flags after hydration, skipping writes when values are unchanged.
+   */
   useEffect(() => {
     if (!hintsStorageKey || !hintsHydrated) {
       return;
@@ -231,7 +257,7 @@ const Movie = ({
     if (
       hydratedHintsRef.current &&
       Object.keys(payload).every(
-        (key) => hydratedHintsRef.current[key] === payload[key]
+        (key) => hydratedHintsRef.current[key] === payload[key],
       )
     ) {
       return;
