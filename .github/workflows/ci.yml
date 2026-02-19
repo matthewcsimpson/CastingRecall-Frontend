@@ -1,4 +1,4 @@
-name: CI
+name: build-and-test
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - production
 
 concurrency:
-  group: ci-cd-${{ github.ref }}
+  group: build-and-test-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -28,6 +28,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Run build
+        run: npm run build
 
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
