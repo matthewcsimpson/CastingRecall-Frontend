@@ -1,19 +1,19 @@
 import { useMemo } from "react";
 import { getStoredGuessState } from "./useGuessState";
 
+const STATUS = {
+  SOLVED: "solved",
+  FAILED: "failed",
+  IN_PROGRESS: "in_progress",
+  NOT_ATTEMPTED: "not_attempted",
+};
+
 /**
  * Builds a mapping of puzzleIds to simplified status strings derived from saved guess state.
  * @param {Array<{puzzleId: string}>|null} puzzleList Collection of available puzzles.
  * @returns {Record<string, "solved" | "failed" | "not_attempted">} Object keyed by puzzleId containing status identifiers for the UI.
  */
 const usePuzzleStatuses = (puzzleList) => {
-  const STATUS = {
-    SOLVED: "solved",
-    FAILED: "failed",
-    IN_PROGRESS: "in_progress",
-    NOT_ATTEMPTED: "not_attempted",
-  };
-
   return useMemo(() => {
     if (!Array.isArray(puzzleList) || puzzleList.length === 0) {
       return {};
