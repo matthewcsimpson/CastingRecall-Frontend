@@ -2,6 +2,9 @@
   "name": "casting-recall-client",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "20.x"
+  },
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
@@ -44,6 +47,6 @@
     ]
   },
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "typescript": "4.9.5"
   }
 }
