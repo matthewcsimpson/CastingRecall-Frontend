@@ -18,6 +18,12 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:watch": "react-scripts test --watch",
+    "test:ci": "CI=true react-scripts test --watchAll=false --passWithNoTests",
+    "test:coverage": "CI=true react-scripts test --watchAll=false --coverage --passWithNoTests",
+    "test:all": "npm run test:ci && npm run test:e2e",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -37,5 +43,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2"
   }
 }

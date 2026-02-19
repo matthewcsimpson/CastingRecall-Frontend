@@ -77,16 +77,16 @@ const GuessForm = ({
   }, [trimmedQuery, tmdbLowestYear]);
 
   /**
-   * Function to handle form field input one char at a time.
-   * @param {*} evt
+   * Update the current search query from text input.
+   * @param {React.ChangeEvent<HTMLInputElement>} evt Input change event.
    */
   const handleFieldChange = useCallback((evt) => {
     setSearchQuery(evt.target.value);
   }, []);
 
   /**
-   * Function to handle when a suggestion is selected.
-   * @param {*} evt
+   * Submit a selected suggestion as a guess and reset suggestion UI.
+   * @param {React.MouseEvent<HTMLButtonElement>} evt Suggestion click event.
    */
   const handleSuggestionSelect = useCallback(
     (evt) => {
@@ -109,9 +109,9 @@ const GuessForm = ({
   );
 
   /**
-   * Function to fetch suggestions from TMDB based on the query.
-   * @param {string} query
-   * @param {AbortController} controller
+   * Fetch TMDB suggestions, apply puzzle filters, then cache the result.
+   * @param {string} query Search query string.
+   * @param {AbortController} controller Abort controller for request cancellation.
    */
   const fetchSuggestions = useCallback(
     async (query, controller) => {
@@ -195,7 +195,7 @@ const GuessForm = ({
     [SEARCH_URL, TMDB_TOKEN, tmdbLowestYear, cacheKey],
   );
 
-  // Effect to fetch suggestions when the search query changes
+  // Fetch suggestions when query/filter state changes.
   useEffect(() => {
     if (!trimmedQuery || trimmedQuery.length < 1) {
       setSearchResults([]);
@@ -230,7 +230,7 @@ const GuessForm = ({
     };
   }, [TMDB_TOKEN, SEARCH_URL, trimmedQuery, cacheKey, fetchSuggestions]);
 
-  // Effect to clear search state when the puzzle ID changes
+  // Reset search UI/cache when moving to a different puzzle.
   useEffect(() => {
     setSearchResults([]);
     setSearchQuery("");
