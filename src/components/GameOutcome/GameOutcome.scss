@@ -1,4 +1,3 @@
-@use "sass:color";
 @use "../../styles/partials/global" as *;
 @use "../../styles/partials/mixins" as *;
 @use "../../styles/partials/variables" as *;
@@ -89,7 +88,7 @@
         padding: 0.5rem 1.25rem;
         border-radius: 999px;
         border: 1px solid rgba($primary-colour, 0.4);
-        background-color: color.adjust($background-colour, $lightness: 10%);
+        background-color: lighten($background-colour, 10%);
         color: $primary-colour;
         font-size: 0.85rem;
         text-transform: uppercase;
@@ -102,7 +101,7 @@
 
         &:hover,
         &:focus {
-            background-color: color.adjust($background-colour, $lightness: 16%);
+            background-color: lighten($background-colour, 16%);
             border-color: $primary-colour;
             transform: translateY(-1px);
         }

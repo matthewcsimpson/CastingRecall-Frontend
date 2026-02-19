@@ -37,4 +37,14 @@
             font-size: 0.5rem;
         }
     }
+
+    &__kofi-link {
+        display: inline-flex;
+        margin-top: 0.25rem;
+    }
+
+    &__kofi-image {
+        border: 0;
+        height: 2.25rem;
+    }
 }
