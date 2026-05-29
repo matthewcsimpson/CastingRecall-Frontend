@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { API_ENDPOINTS } from "constants/config";
+import useFetch from "./useFetch";
 
 /**
  * Retrieves puzzle payloads from the Casting Recall API and exposes them to consumers.
@@ -10,46 +9,12 @@ import { API_ENDPOINTS } from "constants/config";
  * @returns {{data: object|null, isLoading: boolean}} Puzzle payload and loading flag.
  */
 const usePuzzleData = (apiUrl, puzzleId) => {
-  const [state, setState] = useState({ data: null, isLoading: true });
+  const activePuzzleId = puzzleId || "latest";
+  const url = apiUrl
+    ? `${apiUrl}${API_ENDPOINTS.puzzleId.replace(":puzzleId", activePuzzleId)}`
+    : null;
 
-  useEffect(() => {
-    if (!apiUrl) {
-      return;
-    }
-
-    const controller = new AbortController();
-    const activePuzzleId = puzzleId || "latest";
-
-    const fetchPuzzle = async () => {
-      try {
-        setState((prev) => ({ ...prev, isLoading: true }));
-        const response = await axios.get(
-          `${apiUrl}${API_ENDPOINTS.puzzleId.replace(
-            ":puzzleId",
-            activePuzzleId
-          )}`,
-          {
-            signal: controller.signal,
-          }
-        );
-        setState({ data: response.data, isLoading: false });
-      } catch (err) {
-        if (axios.isCancel(err) || err.name === "CanceledError") {
-          return;
-        }
-        console.error(err);
-        setState((prev) => ({ ...prev, isLoading: false }));
-      }
-    };
-
-    fetchPuzzle();
-
-    return () => {
-      controller.abort();
-    };
-  }, [apiUrl, puzzleId]);
-
-  return state;
+  return useFetch(url);
 };
 
 export default usePuzzleData;

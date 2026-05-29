@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import useFetch from "./useFetch";
 
 /**
  * Fetches TMDB genre metadata and keeps it cached in state for reuse across components.
@@ -8,41 +7,17 @@ import axios from "axios";
  * @returns {Array<{id: number, name: string}>|null} Array of genre objects once loaded, otherwise null while pending.
  */
 const useGenres = (genreUrl, bearerToken) => {
-  const [genreData, setGenreData] = useState(null);
+  const url = genreUrl && bearerToken ? `${genreUrl}?language=en-US` : null;
 
-  useEffect(() => {
-    if (!genreUrl || !bearerToken) {
-      return;
-    }
+  const { data } = useFetch(url, {
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+      Accept: "application/json",
+    },
+    select: (response) => response.data.genres,
+  });
 
-    const controller = new AbortController();
-
-    const fetchGenres = async () => {
-      try {
-        const response = await axios.get(`${genreUrl}?language=en-US`, {
-          signal: controller.signal,
-          headers: {
-            Authorization: `Bearer ${bearerToken}`,
-            Accept: "application/json",
-          },
-        });
-        setGenreData(response.data.genres);
-      } catch (err) {
-        if (axios.isCancel(err) || err.name === "CanceledError") {
-          return;
-        }
-        console.error(err);
-      }
-    };
-
-    fetchGenres();
-
-    return () => {
-      controller.abort();
-    };
-  }, [bearerToken, genreUrl]);
-
-  return genreData;
+  return data;
 };
 
 export default useGenres;

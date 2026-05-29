@@ -15,11 +15,11 @@ describe("usePuzzleList", () => {
     axios.isCancel.mockReturnValue(false);
   });
 
-  test("does not fetch when apiUrl is missing", () => {
+  test("does not fetch and resolves to not-loading when apiUrl is missing", () => {
     const { result } = renderHook(() => usePuzzleList(""));
 
     expect(axios.get).not.toHaveBeenCalled();
-    expect(result.current).toEqual({ data: null, isLoading: true });
+    expect(result.current).toEqual({ data: null, isLoading: false });
   });
 
   test("fetches and normalizes puzzles array", async () => {

@@ -28,3 +28,7 @@ src/.env
 
 .vscode
 src/assets/temp.jsx
+
+
+# Playbook working artefacts
+.playbook-audits/
