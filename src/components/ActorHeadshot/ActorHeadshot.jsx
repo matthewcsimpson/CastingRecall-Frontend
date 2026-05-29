@@ -2,13 +2,10 @@
 import profilePic from "../../assets/profile-placeholder.jpg";
 
 // Utilities
-import { obscureString } from "../../utilities";
+import { obscureString, tmdbImageUrl } from "../../utilities";
 
 // Styles
 import "./ActorHeadshot.scss";
-
-// Variables
-const IMG_BASE = process.env.REACT_APP_TMDB_IMG_BASE;
 
 /**
  * Component to display an actor's headshot and name.
@@ -21,9 +18,7 @@ const ActorHeadshot = ({ actor, revealCharNamesVisible }) => {
     <div key={actor.id} className="headshotbox">
       <img
         className={"headshot"}
-        src={
-          actor.profile_path ? `${IMG_BASE}${actor.profile_path}` : profilePic
-        }
+        src={tmdbImageUrl(actor.profile_path, { fallback: profilePic })}
         alt={actor.name}
       />
       <p className="actorname">{`${actor.name}`}</p>

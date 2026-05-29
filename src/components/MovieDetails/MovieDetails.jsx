@@ -11,13 +11,12 @@ import {
   formatDate,
   obscureString,
   shortenString,
+  tmdbImageUrl,
   YEAR_ONLY_DATE_OPTIONS,
 } from "../../utilities";
 
 import "./MovieDetails.scss";
 
-const IMG_BASE =
-  process.env.REACT_APP_TMDB_IMG_BASE || "https://image.tmdb.org/t/p/w500/";
 const MovieDetails = ({
   movie,
   genres,
@@ -27,15 +26,11 @@ const MovieDetails = ({
   revealSynopsis,
 }) => {
   const posterSrc = useMemo(() => {
-    if (!movie?.poster_path) {
+    if (!revealAll) {
       return questionmarkimg;
     }
 
-    if (revealAll) {
-      return `${IMG_BASE}${movie.poster_path}`;
-    }
-
-    return questionmarkimg;
+    return tmdbImageUrl(movie?.poster_path, { fallback: questionmarkimg });
   }, [movie?.poster_path, revealAll]);
 
   const posterAlt = revealAll ? movie?.original_title ?? "" : "hidden!";
