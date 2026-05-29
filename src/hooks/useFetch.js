@@ -18,6 +18,7 @@ const useFetch = (url, options = {}) => {
 
   useEffect(() => {
     if (!url) {
+      setState({ data: null, isLoading: false });
       return;
     }
 

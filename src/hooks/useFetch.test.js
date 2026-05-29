@@ -16,11 +16,11 @@ describe("useFetch", () => {
     axios.isCancel.mockReturnValue(false);
   });
 
-  test("does not fetch when url is falsy", () => {
+  test("does not fetch and resolves to not-loading when url is falsy", () => {
     const { result } = renderHook(() => useFetch(""));
 
     expect(axios.get).not.toHaveBeenCalled();
-    expect(result.current).toEqual({ data: null, isLoading: true });
+    expect(result.current).toEqual({ data: null, isLoading: false });
   });
 
   test("returns response.data and clears loading on success", async () => {
