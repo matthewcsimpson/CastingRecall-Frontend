@@ -8,6 +8,9 @@ import axios from "axios";
 // Components
 import { LoadingScreen } from "..";
 
+// Utilities
+import { tmdbImageUrl } from "../../utilities";
+
 // Constants
 const TMDB_DEBOUNCE_DELAY_MS = 300;
 const TMDB_SUGGESTION_LIMIT = 10;
@@ -27,7 +30,6 @@ const GuessForm = ({
   const TMDB_TOKEN = process.env.REACT_APP_TMDB_TOKEN;
   const SEARCH_URL = process.env.REACT_APP_TMDB_MOVIE_SEARCH_URL;
   const LOWEST_YEAR = process.env.REACT_APP_TMDB_LOWEST_YEAR;
-  const IMG_BASE = process.env.REACT_APP_TMDB_IMG_BASE;
 
   // State
   const [searchQuery, setSearchQuery] = useState("");
@@ -255,9 +257,9 @@ const GuessForm = ({
               <ul className="hero__searchsuggestions">
                 {searchResults &&
                   searchResults.map((movie) => {
-                    const posterUrl = movie.poster_path
-                      ? `${IMG_BASE}${movie.poster_path}`
-                      : null;
+                    const posterUrl = tmdbImageUrl(movie.poster_path, {
+                      fallback: null,
+                    });
 
                     return (
                       <li key={movie.id}>
