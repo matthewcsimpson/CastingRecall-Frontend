@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-jest.mock("..", () => ({
+vi.mock("..", () => ({
   ActorHeadshot: ({ actor }) => <div>{`Actor-${actor.id}`}</div>,
   MovieDetails: ({ revealDirector }) => (
     <div>{`MovieDetails-revealDirector-${String(revealDirector)}`}</div>
@@ -26,15 +26,15 @@ jest.mock("..", () => ({
   ),
 }));
 
-jest.mock("../../utilities", () => ({
-  shortenMultipleCharNames: jest.fn((value) => value),
-  removeVoiceFromString: jest.fn((value) => value),
-  loadLocalJson: jest.fn(),
-  saveLocalJson: jest.fn(),
+vi.mock("../../utilities", () => ({
+  shortenMultipleCharNames: vi.fn((value) => value),
+  removeVoiceFromString: vi.fn((value) => value),
+  loadLocalJson: vi.fn(),
+  saveLocalJson: vi.fn(),
 }));
 
-const { loadLocalJson, saveLocalJson } = require("../../utilities");
-const Movie = require("./Movie").default;
+const { loadLocalJson, saveLocalJson } = (await import("../../utilities"));
+const Movie = (await import("./Movie")).default;
 
 const baseMovie = {
   id: 1,
@@ -50,13 +50,13 @@ const buildProps = (overrides = {}) => ({
   youWon: false,
   youLost: false,
   reallyWantHints: true,
-  onHintSpend: jest.fn(() => true),
+  onHintSpend: vi.fn(() => true),
   ...overrides,
 });
 
 describe("Movie", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     loadLocalJson.mockReturnValue(null);
   });
 
@@ -80,7 +80,7 @@ describe("Movie", () => {
   });
 
   test("spends hint and persists updated reveal state when allowed", async () => {
-    const onHintSpend = jest.fn(() => true);
+    const onHintSpend = vi.fn(() => true);
     render(<Movie {...buildProps({ onHintSpend })} />);
 
     fireEvent.click(
@@ -102,7 +102,7 @@ describe("Movie", () => {
   });
 
   test("does not reveal or persist spendable hint when spend is denied", async () => {
-    const onHintSpend = jest.fn(() => false);
+    const onHintSpend = vi.fn(() => false);
     render(<Movie {...buildProps({ onHintSpend })} />);
 
     fireEvent.click(

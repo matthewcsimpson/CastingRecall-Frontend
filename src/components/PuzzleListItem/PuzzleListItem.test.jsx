@@ -1,13 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import PuzzleListItem from "./PuzzleListItem";
 
-jest.mock(
+vi.mock(
   "react-router-dom",
   () => ({
     NavLink: ({ to, children }) => <a href={to}>{children}</a>,
-  }),
-  { virtual: true },
-);
+  }));
 
 describe("PuzzleListItem", () => {
   test("renders link, first names, and solved progress text", () => {

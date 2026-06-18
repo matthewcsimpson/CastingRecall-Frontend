@@ -3,9 +3,9 @@ import useGuessState, { getStoredGuessState } from "./useGuessState";
 import { loadLocalJson, saveLocalJson } from "../utilities";
 import { MOVIES_PER_PUZZLE } from "../constants/config";
 
-jest.mock("../utilities", () => ({
-  loadLocalJson: jest.fn(),
-  saveLocalJson: jest.fn(),
+vi.mock("../utilities", () => ({
+  loadLocalJson: vi.fn(),
+  saveLocalJson: vi.fn(),
 }));
 
 const buildPuzzle = () =>
@@ -16,7 +16,7 @@ const buildPuzzle = () =>
 
 describe("getStoredGuessState", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test("returns null when puzzle id is missing", () => {
@@ -48,7 +48,7 @@ describe("getStoredGuessState", () => {
 
 describe("useGuessState", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     loadLocalJson.mockReturnValue(null);
   });
 

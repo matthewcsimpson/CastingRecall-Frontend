@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 
-jest.mock(
+vi.mock(
   "react-router-dom",
   () => ({
     Link: ({ to, className, children }) => (
@@ -8,11 +8,9 @@ jest.mock(
         {children}
       </a>
     ),
-  }),
-  { virtual: true },
-);
+  }));
 
-const SiteHeader = require("./SiteHeader").default;
+const SiteHeader = (await import("./SiteHeader")).default;
 
 describe("SiteHeader", () => {
   test("renders the title linking home", () => {

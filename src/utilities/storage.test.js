@@ -3,7 +3,7 @@ import { loadLocalJson, saveLocalJson } from "./storage";
 describe("storage utilities", () => {
   beforeEach(() => {
     window.localStorage.clear();
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   test("saveLocalJson stores serialized JSON", () => {
@@ -21,8 +21,8 @@ describe("storage utilities", () => {
 
   test("loadLocalJson returns fallback and reports error for invalid JSON", () => {
     window.localStorage.setItem("state", "{bad json");
-    const onError = jest.fn();
-    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const onError = vi.fn();
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     const result = loadLocalJson("state", { fallback: true }, { onError });
 
@@ -33,7 +33,7 @@ describe("storage utilities", () => {
 
   test("loadLocalJson can stay silent on parse error", () => {
     window.localStorage.setItem("state", "{bad json");
-    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     const result = loadLocalJson("state", null, { silent: true });
 

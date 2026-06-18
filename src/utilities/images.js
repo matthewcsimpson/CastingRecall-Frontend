@@ -1,5 +1,5 @@
 const IMG_BASE =
-  process.env.REACT_APP_TMDB_IMG_BASE || "https://image.tmdb.org/t/p/w500/";
+  import.meta.env.VITE_TMDB_IMG_BASE || "https://image.tmdb.org/t/p/w500/";
 
 /**
  * Build a TMDB image URL from a relative path, falling back when absent.

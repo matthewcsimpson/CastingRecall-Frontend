@@ -6,21 +6,19 @@ import {
   waitFor,
 } from "@testing-library/react";
 
-jest.mock(
-  "axios",
-  () => ({
-    get: jest.fn(),
-    isCancel: jest.fn(() => false),
-  }),
-  { virtual: true },
-);
+vi.mock("axios", () => ({
+  default: {
+    get: vi.fn(),
+    isCancel: vi.fn(() => false),
+  },
+}));
 
-jest.mock("..", () => ({
+vi.mock("..", () => ({
   LoadingScreen: () => <div>LoadingScreen</div>,
 }));
 
-const axios = require("axios");
-const GuessForm = require("./GuessForm").default;
+const axios = (await import("axios")).default;
+const GuessForm = (await import("./GuessForm")).default;
 
 const buildProps = (overrides = {}) => ({
   puzzleId: "123",
@@ -29,14 +27,14 @@ const buildProps = (overrides = {}) => ({
   maxGuesses: 10,
   youWon: false,
   youLost: false,
-  handleSubmitGuess: jest.fn(),
+  handleSubmitGuess: vi.fn(),
   ...overrides,
 });
 
 describe("GuessForm", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    jest.useFakeTimers();
+    vi.clearAllMocks();
+    vi.useFakeTimers();
 
     process.env.REACT_APP_TMDB_TOKEN = "token-123";
     process.env.REACT_APP_TMDB_MOVIE_SEARCH_URL =
@@ -46,7 +44,7 @@ describe("GuessForm", () => {
   });
 
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   test("renders loading screen when puzzle data is missing", () => {
@@ -70,7 +68,7 @@ describe("GuessForm", () => {
   });
 
   test("fetches filtered suggestions and submits selected movie", async () => {
-    const handleSubmitGuess = jest.fn();
+    const handleSubmitGuess = vi.fn();
     const props = buildProps({ handleSubmitGuess, guessNum: 0 });
 
     axios.get.mockResolvedValue({
@@ -110,7 +108,7 @@ describe("GuessForm", () => {
     fireEvent.change(input, { target: { value: "Valid" } });
 
     await act(async () => {
-      jest.advanceTimersByTime(300);
+      vi.advanceTimersByTime(300);
     });
 
     await waitFor(() => {

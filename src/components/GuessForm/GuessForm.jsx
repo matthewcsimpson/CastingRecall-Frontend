@@ -27,9 +27,9 @@ const GuessForm = ({
   handleSubmitGuess,
 }) => {
   // Data
-  const TMDB_TOKEN = process.env.REACT_APP_TMDB_TOKEN;
-  const SEARCH_URL = process.env.REACT_APP_TMDB_MOVIE_SEARCH_URL;
-  const LOWEST_YEAR = process.env.REACT_APP_TMDB_LOWEST_YEAR;
+  const TMDB_TOKEN = import.meta.env.VITE_TMDB_TOKEN;
+  const SEARCH_URL = import.meta.env.VITE_TMDB_MOVIE_SEARCH_URL;
+  const LOWEST_YEAR = import.meta.env.VITE_TMDB_LOWEST_YEAR;
 
   // State
   const [searchQuery, setSearchQuery] = useState("");

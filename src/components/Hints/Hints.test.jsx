@@ -9,7 +9,7 @@ const revealKeys = {
 };
 
 const buildProps = (overrides = {}) => ({
-  handleHintClick: jest.fn(),
+  handleHintClick: vi.fn(),
   revealKeys,
   revealHints: false,
   revealDirector: false,
@@ -23,7 +23,7 @@ const buildProps = (overrides = {}) => ({
 
 describe("Hints", () => {
   test("shows prompt when hints are hidden and requests reveal on click", () => {
-    const handleHintClick = jest.fn();
+    const handleHintClick = vi.fn();
     render(<Hints {...buildProps({ handleHintClick })} />);
 
     fireEvent.click(screen.getByText("pssst....need a hint?"));
@@ -40,7 +40,7 @@ describe("Hints", () => {
   });
 
   test("shows hint buttons and passes expected payload when clicked", () => {
-    const handleHintClick = jest.fn();
+    const handleHintClick = vi.fn();
     render(
       <Hints
         {...buildProps({

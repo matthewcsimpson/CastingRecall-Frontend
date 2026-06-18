@@ -1,16 +1,16 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import useGenres from "./useGenres";
 
-jest.mock("axios", () => ({
-  get: jest.fn(),
-  isCancel: jest.fn(),
-}));
+vi.mock("axios", () => ({ default: {
+  get: vi.fn(),
+  isCancel: vi.fn(),
+} }));
 
-const axios = require("axios");
+const axios = (await import("axios")).default;
 
 describe("useGenres", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     axios.isCancel.mockReturnValue(false);
   });
 
@@ -46,7 +46,7 @@ describe("useGenres", () => {
   test("handles request errors and leaves data as null", async () => {
     const error = new Error("request failed");
     axios.get.mockRejectedValue(error);
-    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     const { result } = renderHook(() =>
       useGenres("https://example.com/genre/movie/list", "token-123"),

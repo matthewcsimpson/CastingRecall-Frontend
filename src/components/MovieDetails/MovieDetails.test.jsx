@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import MovieDetails from "./MovieDetails";
 
-jest.mock("..", () => ({
+vi.mock("..", () => ({
   GenreTags: ({ genreIds = [], genres = [] }) => (
     <div>{`GenreTags-${genreIds.length}-${genres.length}`}</div>
   ),

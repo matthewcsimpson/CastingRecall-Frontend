@@ -1,18 +1,18 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import useFetch from "./useFetch";
 
-jest.mock("axios", () => ({
-  get: jest.fn(),
-  isCancel: jest.fn(),
-}));
+vi.mock("axios", () => ({ default: {
+  get: vi.fn(),
+  isCancel: vi.fn(),
+} }));
 
-const axios = require("axios");
+const axios = (await import("axios")).default;
 
 const flushMicrotasks = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 describe("useFetch", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     axios.isCancel.mockReturnValue(false);
   });
 
@@ -76,7 +76,7 @@ describe("useFetch", () => {
   test("swallows cancellation without logging or clearing loading", async () => {
     axios.isCancel.mockReturnValue(true);
     axios.get.mockRejectedValue({ name: "CanceledError" });
-    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     const { result } = renderHook(() => useFetch("https://api.example.com/x"));
 
@@ -94,7 +94,7 @@ describe("useFetch", () => {
   test("logs a real error once and stops loading with data untouched", async () => {
     const error = new Error("network down");
     axios.get.mockRejectedValue(error);
-    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     const { result } = renderHook(() => useFetch("https://api.example.com/x"));
 
@@ -110,7 +110,7 @@ describe("useFetch", () => {
 
   test("aborts the in-flight request on unmount", async () => {
     axios.get.mockResolvedValue({ data: {} });
-    const abortSpy = jest.spyOn(AbortController.prototype, "abort");
+    const abortSpy = vi.spyOn(AbortController.prototype, "abort");
 
     const { unmount } = renderHook(() =>
       useFetch("https://api.example.com/x"),

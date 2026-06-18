@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 
-jest.mock("../../hooks", () => ({
-  usePuzzleList: jest.fn(),
-  usePuzzleStatuses: jest.fn(),
+vi.mock("../../hooks", () => ({
+  usePuzzleList: vi.fn(),
+  usePuzzleStatuses: vi.fn(),
 }));
 
-jest.mock("../../components", () => ({
+vi.mock("../../components", () => ({
   LoadingScreen: () => <div>LoadingScreen</div>,
   PuzzleListHeader: () => <div>PuzzleListHeader</div>,
   PuzzleListItem: ({ puzzleId, status }) => (
@@ -16,12 +16,12 @@ jest.mock("../../components", () => ({
   ),
 }));
 
-const { usePuzzleList, usePuzzleStatuses } = require("../../hooks");
-const ListPage = require("./ListPage").default;
+const { usePuzzleList, usePuzzleStatuses } = (await import("../../hooks"));
+const ListPage = (await import("./ListPage")).default;
 
 describe("ListPage integration", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test("renders loading state while puzzle list is pending", () => {

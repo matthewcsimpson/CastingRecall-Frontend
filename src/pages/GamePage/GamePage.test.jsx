@@ -7,42 +7,38 @@ import {
   useGuessState,
 } from "../../hooks";
 
-jest.mock(
+vi.mock(
   "axios",
   () => ({
-    get: jest.fn(),
-    isCancel: jest.fn(() => false),
-  }),
-  { virtual: true },
-);
+    get: vi.fn(),
+    isCancel: vi.fn(() => false),
+  }));
 
-jest.mock(
+vi.mock(
   "react-router-dom",
   () => ({
-    useParams: jest.fn(),
+    useParams: vi.fn(),
     NavLink: ({ to, children, className }) => (
       <a href={to} className={className}>
         {children}
       </a>
     ),
-  }),
-  { virtual: true },
-);
+  }));
 
-const { useParams } = require("react-router-dom");
+const { useParams } = (await import("react-router-dom"));
 
-jest.mock("../../hooks", () => ({
-  useGenres: jest.fn(),
-  usePuzzleData: jest.fn(),
-  usePuzzleList: jest.fn(),
-  useGuessState: jest.fn(),
+vi.mock("../../hooks", () => ({
+  useGenres: vi.fn(),
+  usePuzzleData: vi.fn(),
+  usePuzzleList: vi.fn(),
+  useGuessState: vi.fn(),
 }));
 
 const renderGamePage = () => render(<GamePage />);
 
 describe("GamePage integration", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     useParams.mockReturnValue({ puzzleId: "123" });
   });
 
@@ -56,8 +52,8 @@ describe("GamePage integration", () => {
       youLost: false,
       totalGuesses: 0,
       maxGuesses: 10,
-      handleSubmitGuess: jest.fn(),
-      handleHintUse: jest.fn(),
+      handleSubmitGuess: vi.fn(),
+      handleHintUse: vi.fn(),
     });
 
     renderGamePage();
@@ -122,8 +118,8 @@ describe("GamePage integration", () => {
       youLost: false,
       totalGuesses: 1,
       maxGuesses: 10,
-      handleSubmitGuess: jest.fn(),
-      handleHintUse: jest.fn(() => true),
+      handleSubmitGuess: vi.fn(),
+      handleHintUse: vi.fn(() => true),
     });
 
     renderGamePage();

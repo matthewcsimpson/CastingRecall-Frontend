@@ -21,9 +21,9 @@ import {
 
 const GamePage = () => {
   // Data
-  const REACT_APP_TMDB_TOKEN = process.env.REACT_APP_TMDB_TOKEN;
-  const REACT_APP_TMDB_GENRE_DETAILS = process.env.REACT_APP_TMDB_GENRE_DETAILS;
-  const REACT_APP_API_REMOTE_URL = process.env.REACT_APP_API_REMOTE_URL;
+  const REACT_APP_TMDB_TOKEN = import.meta.env.VITE_TMDB_TOKEN;
+  const REACT_APP_TMDB_GENRE_DETAILS = import.meta.env.VITE_TMDB_GENRE_DETAILS;
+  const REACT_APP_API_REMOTE_URL = import.meta.env.VITE_API_REMOTE_URL;
 
   let { puzzleId } = useParams();
 

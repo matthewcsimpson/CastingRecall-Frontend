@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import App from "./App";
 
-jest.mock(
+vi.mock(
   "react-router-dom",
   () => {
-    const Route = jest.fn(() => null);
+    const Route = vi.fn(() => null);
 
     return {
       BrowserRouter: ({ children }) => (
@@ -13,32 +13,30 @@ jest.mock(
       Routes: ({ children }) => <div data-testid="routes">{children}</div>,
       Route,
     };
-  },
-  { virtual: true },
-);
+  });
 
-jest.mock("./components", () => ({
+vi.mock("./components", () => ({
   SiteHeader: () => <div>SiteHeader</div>,
   SiteFooter: () => <div>SiteFooter</div>,
 }));
 
-jest.mock("./pages/GamePage/GamePage", () => {
+vi.mock("./pages/GamePage/GamePage", () => {
   const MockGamePage = () => <div>GamePage</div>;
   return { __esModule: true, default: MockGamePage };
 });
 
-jest.mock("./pages/ListPage/ListPage", () => {
+vi.mock("./pages/ListPage/ListPage", () => {
   const MockListPage = () => <div>ListPage</div>;
   return { __esModule: true, default: MockListPage };
 });
 
-const { Route } = require("react-router-dom");
-const GamePage = require("./pages/GamePage/GamePage").default;
-const ListPage = require("./pages/ListPage/ListPage").default;
+const { Route } = (await import("react-router-dom"));
+const GamePage = (await import("./pages/GamePage/GamePage")).default;
+const ListPage = (await import("./pages/ListPage/ListPage")).default;
 
 describe("App route wiring", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test("renders site frame and defines expected routes", () => {

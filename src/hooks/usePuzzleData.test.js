@@ -2,16 +2,16 @@ import { renderHook, waitFor } from "@testing-library/react";
 import usePuzzleData from "./usePuzzleData";
 import { API_ENDPOINTS } from "../constants/config";
 
-jest.mock("axios", () => ({
-  get: jest.fn(),
-  isCancel: jest.fn(),
-}));
+vi.mock("axios", () => ({ default: {
+  get: vi.fn(),
+  isCancel: vi.fn(),
+} }));
 
-const axios = require("axios");
+const axios = (await import("axios")).default;
 
 describe("usePuzzleData", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     axios.isCancel.mockReturnValue(false);
   });
 
@@ -43,7 +43,7 @@ describe("usePuzzleData", () => {
   test("handles request failure and stops loading", async () => {
     const error = new Error("network error");
     axios.get.mockRejectedValue(error);
-    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     const { result } = renderHook(() =>
       usePuzzleData("https://api.example.com", "123"),

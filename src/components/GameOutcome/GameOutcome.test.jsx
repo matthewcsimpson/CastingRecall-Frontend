@@ -15,11 +15,11 @@ const buildProps = (overrides = {}) => ({
 
 describe("GameOutcome", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   test("renders nothing when status is missing", () => {
@@ -44,9 +44,9 @@ describe("GameOutcome", () => {
   });
 
   test("copies share text successfully and shows copied state", async () => {
-    jest.useFakeTimers();
-    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
-    const writeText = jest.fn().mockResolvedValue(undefined);
+    vi.useFakeTimers();
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    const writeText = vi.fn().mockResolvedValue(undefined);
 
     Object.defineProperty(global.navigator, "clipboard", {
       configurable: true,
@@ -71,7 +71,7 @@ describe("GameOutcome", () => {
     });
 
     await act(async () => {
-      jest.advanceTimersByTime(2000);
+      vi.advanceTimersByTime(2000);
     });
 
     expect(
@@ -81,7 +81,7 @@ describe("GameOutcome", () => {
 
   test("shows copy failed when clipboard is unavailable", async () => {
     const user = userEvent.setup();
-    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     Object.defineProperty(global.navigator, "clipboard", {
       configurable: true,

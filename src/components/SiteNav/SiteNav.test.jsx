@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 
 const siteNavItemCalls = [];
 
-jest.mock("../SiteNavItem/SiteNavItem.jsx", () => ({
+vi.mock("../SiteNavItem/SiteNavItem.jsx", () => ({
   __esModule: true,
   default: (props) => {
     siteNavItemCalls.push(props);
@@ -20,7 +20,7 @@ jest.mock("../SiteNavItem/SiteNavItem.jsx", () => ({
   },
 }));
 
-jest.mock("../HowToPlayModal/HowToPlayModal.jsx", () => ({
+vi.mock("../HowToPlayModal/HowToPlayModal.jsx", () => ({
   __esModule: true,
   default: ({ isOpen, onClose }) => (
     <div>
@@ -32,7 +32,7 @@ jest.mock("../HowToPlayModal/HowToPlayModal.jsx", () => ({
   ),
 }));
 
-const SiteNav = require("./SiteNav").default;
+const SiteNav = (await import("./SiteNav")).default;
 
 const puzzleList = [
   { puzzleId: "123" },

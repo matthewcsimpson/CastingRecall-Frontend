@@ -2,13 +2,13 @@ import { renderHook } from "@testing-library/react";
 import usePuzzleStatuses from "./usePuzzleStatuses";
 import { getStoredGuessState } from "./useGuessState";
 
-jest.mock("./useGuessState", () => ({
-  getStoredGuessState: jest.fn(),
+vi.mock("./useGuessState", () => ({
+  getStoredGuessState: vi.fn(),
 }));
 
 describe("usePuzzleStatuses", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test("returns empty object when puzzle list is missing", () => {

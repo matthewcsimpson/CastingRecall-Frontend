@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 
-jest.mock(
+vi.mock(
   "react-router-dom",
   () => ({
     NavLink: ({ to, className, children }) => (
@@ -8,11 +8,9 @@ jest.mock(
         {children}
       </a>
     ),
-  }),
-  { virtual: true },
-);
+  }));
 
-const SiteNavItem = require("./SiteNavItem").default;
+const SiteNavItem = (await import("./SiteNavItem")).default;
 
 describe("SiteNavItem", () => {
   test("renders a link to `to` when given a non-empty path", () => {
@@ -24,7 +22,7 @@ describe("SiteNavItem", () => {
   });
 
   test("renders a button that calls onClick when there is no path", () => {
-    const onClick = jest.fn();
+    const onClick = vi.fn();
     render(<SiteNavItem label="How to Play" onClick={onClick} />);
 
     expect(screen.queryByRole("link")).not.toBeInTheDocument();
@@ -34,14 +32,14 @@ describe("SiteNavItem", () => {
   });
 
   test("treats an empty-string path as a button, not a link", () => {
-    render(<SiteNavItem to="" label="Next" onClick={jest.fn()} />);
+    render(<SiteNavItem to="" label="Next" onClick={vi.fn()} />);
 
     expect(screen.queryByRole("link")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Next" })).toBeInTheDocument();
   });
 
   test("disables the button and applies the inactive class when disabled", () => {
-    render(<SiteNavItem label="Previous" disabled={true} onClick={jest.fn()} />);
+    render(<SiteNavItem label="Previous" disabled={true} onClick={vi.fn()} />);
 
     const button = screen.getByRole("button", { name: "Previous" });
     expect(button).toBeDisabled();
@@ -49,13 +47,13 @@ describe("SiteNavItem", () => {
   });
 
   test("renders the icon when provided", () => {
-    render(<SiteNavItem label="Help" icon={<span>★</span>} onClick={jest.fn()} />);
+    render(<SiteNavItem label="Help" icon={<span>★</span>} onClick={vi.fn()} />);
 
     expect(screen.getByText("★")).toBeInTheDocument();
   });
 
   test("sets aria-haspopup on a button with an onClick handler", () => {
-    render(<SiteNavItem label="How to Play" onClick={jest.fn()} />);
+    render(<SiteNavItem label="How to Play" onClick={vi.fn()} />);
 
     expect(screen.getByRole("button", { name: "How to Play" })).toHaveAttribute(
       "aria-haspopup",
