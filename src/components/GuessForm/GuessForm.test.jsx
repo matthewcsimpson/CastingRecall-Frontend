@@ -36,11 +36,10 @@ describe("GuessForm", () => {
     vi.clearAllMocks();
     vi.useFakeTimers();
 
-    process.env.REACT_APP_TMDB_TOKEN = "token-123";
-    process.env.REACT_APP_TMDB_MOVIE_SEARCH_URL =
-      "https://api.example.com/search/movie";
-    process.env.REACT_APP_TMDB_LOWEST_YEAR = "1980";
-    process.env.REACT_APP_TMDB_IMG_BASE = "https://image.example.com/";
+    vi.stubEnv("VITE_TMDB_TOKEN", "token-123");
+    vi.stubEnv("VITE_TMDB_MOVIE_SEARCH_URL", "https://api.example.com/search/movie");
+    vi.stubEnv("VITE_TMDB_LOWEST_YEAR", "1980");
+    vi.stubEnv("VITE_TMDB_IMG_BASE", "https://image.example.com/");
   });
 
   afterEach(() => {

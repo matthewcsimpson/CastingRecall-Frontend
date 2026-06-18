@@ -13,10 +13,10 @@ import {
 import { usePuzzleList, usePuzzleStatuses } from "../../hooks";
 
 const ListPage = () => {
-  const REACT_APP_API_REMOTE_URL = import.meta.env.VITE_API_REMOTE_URL;
+  const API_REMOTE_URL = import.meta.env.VITE_API_REMOTE_URL;
 
   const { data: puzzleList, isLoading: isPuzzleListLoading } = usePuzzleList(
-    REACT_APP_API_REMOTE_URL
+    API_REMOTE_URL
   );
 
   const hasPuzzles = Array.isArray(puzzleList) && puzzleList.length > 0;

@@ -21,22 +21,22 @@ import {
 
 const GamePage = () => {
   // Data
-  const REACT_APP_TMDB_TOKEN = import.meta.env.VITE_TMDB_TOKEN;
-  const REACT_APP_TMDB_GENRE_DETAILS = import.meta.env.VITE_TMDB_GENRE_DETAILS;
-  const REACT_APP_API_REMOTE_URL = import.meta.env.VITE_API_REMOTE_URL;
+  const TMDB_TOKEN = import.meta.env.VITE_TMDB_TOKEN;
+  const TMDB_GENRE_DETAILS = import.meta.env.VITE_TMDB_GENRE_DETAILS;
+  const API_REMOTE_URL = import.meta.env.VITE_API_REMOTE_URL;
 
   let { puzzleId } = useParams();
 
   const genreData = useGenres(
-    REACT_APP_TMDB_GENRE_DETAILS,
-    REACT_APP_TMDB_TOKEN
+    TMDB_GENRE_DETAILS,
+    TMDB_TOKEN
   );
   const { data: puzzleData, isLoading: isPuzzleLoading } = usePuzzleData(
-    REACT_APP_API_REMOTE_URL,
+    API_REMOTE_URL,
     puzzleId
   );
   const { data: puzzleList, isLoading: isPuzzleListLoading } = usePuzzleList(
-    REACT_APP_API_REMOTE_URL
+    API_REMOTE_URL
   );
   const {
     guesses,
